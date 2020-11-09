@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
     // }
     // MPI_Bcast(x, N, MPI_INT, root, MPI_COMM_WORLD);
     // MPI_Bcast(y, N, MPI_INT, root, MPI_COMM_WORLD);
-
     for (number = rankForEachThread; number < N; number = number + sizeOfThread)
     {
         xPowerOfTwo[number] = pow(x[number], 2);
@@ -37,7 +36,6 @@ int main(int argc, char *argv[])
         sumXMultipleByY = sumXMultipleByY + xMultipleByY[number];
         printf("The process %d do x^2 = %d\n x*y = %d\nsumx = %d\nsumy = %d\nsumXPowerOfTwo = %d\nsumXMultipleByY = %d", rankForEachThread, xPowerOfTwo[start], xMultipleByY, sumX, sumY, sumXPowerOfTwo, sumXMultipleByY);
     }
-
     MPI_Finalize();
     return 0;
 }
