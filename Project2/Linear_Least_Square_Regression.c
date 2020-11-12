@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-	int xPowerOfTwo[N], xMultipleByY[N], x[N], y[N], rankForEachThread, sizeOfThread, tag = 123, root = 0,i;
+	int xPowerOfTwo[N], xMultipleByY[N], x[N], y[N], rankForEachThread, sizeOfThread, tag = 123, root = 0, i;
 	MPI_Status status;
 	int sumX = 0, sumY = 0, sumXPowerOfTwo = 0, sumXMultipleByY = 0;
 	int resultsumX = 0, resultsumY = 0, resultsumXPowerOfTwo = 0, resultsumXMultipleByY;
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 		sumXMultipleByY = sumXMultipleByY + xMultipleByY[number];
 		printf("The process %d\ndo x^2 = %d\n x*y = %d\nsumx = %d\nsumy = %d\nsumXPowerOfTwo = %d\nsumXMultipleByY = %d\n", rankForEachThread, xPowerOfTwo[number], xMultipleByY[number], sumX, sumY, sumXPowerOfTwo, sumXMultipleByY);
 	}
-	
+
 	MPI_Reduce(&sumX, &resultsumX, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
 	MPI_Reduce(&sumY, &resultsumY, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
 	MPI_Reduce(&sumXPowerOfTwo, &resultsumXPowerOfTwo, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 		m = m1 / m2;
 
 		printf("-------------- Calculate Slope m --------------\nm1 = %.2f\nm2 = %.2f\nm = m1/m2 = %.2f\n", m1, m2, m);
-			
+
 		b1 = resultsumY - (m * resultsumX);
 		b2 = N;
 		b = b1 / b2;
@@ -84,14 +84,14 @@ int main(int argc, char *argv[])
 		{
 			printf("if x = %d\t Y [%d] = %.2f\n", x[i], i, resultY[i]);
 		}
-		
-		outFile = fopen("PlotGraph.csv","w");
-		for(int i = 0; i < N; i++)	
+
+		outFile = fopen("PlotGraph.csv", "w");
+		for (int i = 0; i < N; i++)
 		{
-			fprintf(outFile,"%d , %f\n",x[i],resultY[i]);
+			fprintf(outFile, "%d , %d , %f\n", x[i], y[i], resultY[i]);
 		}
 		fclose(outFile);
 	}
-	
+
 	MPI_Finalize();
 }
