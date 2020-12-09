@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	MPI_Comm_size(MPI_COMM_WORLD, &sizeOfThread);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rankForEachThread);
 	float m = 0.0, m1 = 0.0, m2 = 0.0, b = 0.0, b1 = 0.0, b2 = 0.0;
-	float resultY[N];
+	float resultYTemp[N / sizeOfThread];
 	FILE *outFile;
 
 	if (rankForEachThread == 0)
@@ -68,18 +68,18 @@ int main(int argc, char *argv[])
 
 	MPI_Bcast(&m, 1, MPI_FLOAT, root, MPI_COMM_WORLD);
 	MPI_Bcast(&b, 1, MPI_FLOAT, root, MPI_COMM_WORLD);
-
+	int count = 0;
 	for (int i = rankForEachThread; i < N; i = i + sizeOfThread)
 	{
-		resultY[i] = ((m * x[i]) + b);
+		resultY[count++] = ((m * x[i]) + b);
 	}
 
 	if (rankForEachThread == 0)
 	{
-		//for (int i = 0; i < N; i++)
-		//{
-		//	printf("if x = %d\t Y [%d] = %d\n", x[i], i, y[i]);
-		//}
+		for (int i = 0; i < N; i++)
+		{
+			printf("if x = %d\t Y [%d] = %d\n", x[i], i, y[i]);
+		}
 		for (int i = 0; i < N; i++)
 		{
 			printf("if x = %d\t Y [%d] = %.2f\n", x[i], i, resultY[i]);
